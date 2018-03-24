@@ -12,6 +12,8 @@
 
 `/env` gets you format that you can drop into your `.env` file
 
+`/json` gets you the salts with key-value in JSON format
+
 ## Benchmark
 
 `go test -benchmem -bench=.`
