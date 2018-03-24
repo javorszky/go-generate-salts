@@ -29,6 +29,7 @@ func main() {
 
 	e.GET("/", GiveSalts)
 	e.GET("/env", GiveSaltsEnv)
+	e.GET("/json", GiveSaltsJSON)
 
 	port := os.Getenv("PORT")
 
@@ -53,6 +54,11 @@ func GiveSalts(c echo.Context) error {
 func GiveSaltsEnv(c echo.Context) error {
 	// return c.String(http.StatusOK, GenerateSaltsEnv8x64())
 	return c.String(http.StatusOK, GenerateSaltsEnv512())
+}
+
+// GiveSaltsJSON responds to the GET /json request
+func GiveSaltsJSON(c echo.Context) error {
+	return c.JSON(http.StatusOK, GenerateSaltsJSON512())
 }
 
 // GenerateSaltsWP8x64 generates the content for GiveSalts by calling the method 8x
@@ -95,6 +101,17 @@ func GenerateSaltsEnv512() string {
 		formattedStrings[i] = fmt.Sprintf("%s=\"%s\"", arg, longstring[i*64:(i+1)*64])
 	}
 	return strings.Join(formattedStrings, "\n")
+}
+
+// GenerateSaltsJSON512 generates the content for GiveSaltsJSON by calling the method once and slicing
+func GenerateSaltsJSON512() map[string]string {
+	formattedStrings := make(map[string]string)
+	longstring := RandStringBytesMaskImprSrc(512)
+
+	for i, arg := range saltTypes {
+		formattedStrings[arg] = longstring[i*64 : (i+1)*64]
+	}
+	return formattedStrings
 }
 
 // AUTH_KEY="put secure salts here"
