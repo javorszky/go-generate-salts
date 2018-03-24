@@ -46,4 +46,4 @@ ok      heroku-dotenv     27.816s
 ## Thank you!
 
 * https://stackoverflow.com/a/31832326/2862802 for the fantastic thread / explanations
-* @djavorszky for rubber ducking and pushing me to do the benchmarks
+* [@djavorszky](https://github.com/djavorszky) for rubber ducking and pushing me to do the benchmarks
