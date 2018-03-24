@@ -37,3 +37,10 @@ func BenchmarkRandStringBytesMaskImpr(b *testing.B) {
 		RandStringBytesMaskImpr(64)
 	}
 }
+
+func BenchmarkRandStringBytesMaskImprSrc(b *testing.B) {
+	// run the RandStringBytesMaskImprSrc function b.N times
+	for n := 0; n < b.N; n++ {
+		RandStringBytesMaskImprSrc(64)
+	}
+}
