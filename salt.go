@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"github.com/labstack/echo"
+	echopprof "github.com/sevenNt/echo-pprof"
 )
 
 const (
@@ -37,6 +38,9 @@ func main() {
 		fmt.Print("Port not in env, setting it to 8090")
 		port = "8090"
 	}
+
+	echopprof.Wrap(e)
+
 	e.Logger.Fatal(e.Start(":" + port))
 }
 
