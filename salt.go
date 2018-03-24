@@ -76,7 +76,7 @@ func GenerateSaltsWP512() string {
 	return strings.Join(formattedStrings, "\n")
 }
 
-// GenerateSaltsWP8x64 generates the content for GiveSaltsEnv by calling the method 8x
+// GenerateSaltsEnv8x64 generates the content for GiveSaltsEnv by calling the method 8x
 func GenerateSaltsEnv8x64() string {
 	formattedStrings := make([]string, 8)
 
