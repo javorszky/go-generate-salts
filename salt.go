@@ -15,6 +15,7 @@ const letterBytes = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456
 const (
 	letterIdxBits = 7                    // 7 bits to represent a letter index (92 is higher than 64 (2<<6) but lower than 128 (2<<7))
 	letterIdxMask = 1<<letterIdxBits - 1 // All 1-bits, as many as letterIdxBits
+	letterIdxMax  = 63 / letterIdxBits   // # of letter indices fitting in 63 bits
 )
 
 var letterRunes = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()-_ []{}<>~`+=,.;:/?|")
@@ -59,7 +60,7 @@ func RandStringBytes(n int) string {
 	return string(b)
 }
 
-// RandStringBytesRmndr generates random string from the remainder from dividing 2 63 byte numbers with length of letterbytes
+// RandStringBytesRmndr generates random string from the remainder from dividing a 64 bit number with the 64 bit representation of the length of characters
 func RandStringBytesRmndr(n int) string {
 	b := make([]byte, n)
 	for i := range b {
@@ -77,5 +78,24 @@ func RandStringBytesMask(n int) string {
 			i++
 		}
 	}
+	return string(b)
+}
+
+// RandStringBytesMaskImpr slices up the bits of the random number and uses all slices
+func RandStringBytesMaskImpr(n int) string {
+	b := make([]byte, n)
+	// A rand.Int63() generates 63 random bits, enough for letterIdxMax letters!
+	for i, cache, remain := n-1, rand.Int63(), letterIdxMax; i >= 0; {
+		if remain == 0 {
+			cache, remain = rand.Int63(), letterIdxMax
+		}
+		if idx := int(cache & letterIdxMask); idx < len(letterBytes) {
+			b[i] = letterBytes[idx]
+			i--
+		}
+		cache >>= letterIdxBits
+		remain--
+	}
+
 	return string(b)
 }
