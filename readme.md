@@ -6,6 +6,12 @@
 2. install packages with `govendor install +local`
 3. run it with `go run salt.go` or compile with `go build salt.go` and run with `./salt`
 
+## Once it's running
+
+`/` gets you standard snippet that you can drop into your `wp-config.php` file
+
+`/env` gets you format that you can drop into your `.env` file
+
 ## Benchmark
 
 `go test -benchmem -bench=.`
@@ -26,9 +32,3 @@ BenchmarkRandStringBytesMaskImprSrc-4   	 3000000	       498 ns/op	     128 B/op
 PASS
 ok  	heroku-dotenv	11.223s
 ```
-
-## Once it's running
-
-`/` gets you standard snippet that you can drop into your `wp-config.php` file
-
-`/env` gets you format that you can drop into your `.env` file
