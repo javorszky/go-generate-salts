@@ -12,6 +12,10 @@ import (
 )
 
 const letterBytes = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()-_ []{}<>~`+=,.;:/?|"
+const (
+	letterIdxBits = 7                    // 7 bits to represent a letter index (92 is higher than 64 (2<<6) but lower than 128 (2<<7))
+	letterIdxMask = 1<<letterIdxBits - 1 // All 1-bits, as many as letterIdxBits
+)
 
 var letterRunes = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()-_ []{}<>~`+=,.;:/?|")
 
@@ -60,6 +64,18 @@ func RandStringBytesRmndr(n int) string {
 	b := make([]byte, n)
 	for i := range b {
 		b[i] = letterBytes[rand.Int63()%int64(len(letterBytes))]
+	}
+	return string(b)
+}
+
+// RandStringBytesMask only uses the last 7 bits of the generated 63 byte int
+func RandStringBytesMask(n int) string {
+	b := make([]byte, n)
+	for i := 0; i < n; {
+		if idx := int(rand.Int63() & letterIdxMask); idx < len(letterBytes) {
+			b[i] = letterBytes[idx]
+			i++
+		}
 	}
 	return string(b)
 }

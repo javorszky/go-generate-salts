@@ -23,3 +23,10 @@ func BenchmarkRandStringBytesRmndr(b *testing.B) {
 		RandStringBytesRmndr(64)
 	}
 }
+
+func BenchmarkRandStringBytesMask(b *testing.B) {
+	// run the RandStringBytesMask function b.N times
+	for n := 0; n < b.N; n++ {
+		RandStringBytesMask(64)
+	}
+}
