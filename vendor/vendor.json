@@ -33,6 +33,12 @@
 			"revisionTime": "2017-11-07T05:05:31Z"
 		},
 		{
+			"checksumSHA1": "VfkMxC5bbcscdGRFpbqT+y2uGYw=",
+			"path": "github.com/sevenNt/echo-pprof",
+			"revision": "8bdaf794e4583c013a089f3902aa140d45a5af1c",
+			"revisionTime": "2017-09-25T08:54:15Z"
+		},
+		{
 			"checksumSHA1": "LTOa3BADhwvT0wFCknPueQALm8I=",
 			"origin": "github.com/valyala/fasttemplate/vendor/github.com/valyala/bytebufferpool",
 			"path": "github.com/valyala/bytebufferpool",
@@ -56,6 +62,12 @@
 			"path": "golang.org/x/crypto/acme/autocert",
 			"revision": "650f4a345ab4e5b245a3034b110ebc7299e68186",
 			"revisionTime": "2017-09-27T09:16:38Z"
+		},
+		{
+			"checksumSHA1": "ulYS2T6w3xAc61yFklgpUEKkjQ0=",
+			"path": "golang.org/x/sys/unix",
+			"revision": "91ee8cde435411ca3f1cd365e8f20131aed4d0a1",
+			"revisionTime": "2018-03-22T14:10:41Z"
 		}
 	],
 	"rootPath": "heroku-dotenv"
