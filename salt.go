@@ -25,6 +25,7 @@ func main() {
 	e := echo.New()
 
 	e.GET("/", giveSalts)
+	e.GET("/env", giveSaltsEnv)
 
 	port := os.Getenv("PORT")
 
@@ -42,6 +43,20 @@ func init() {
 func giveSalts(c echo.Context) error {
 	return c.String(http.StatusOK, "Hellow, World"+s.Repeat("test", 5))
 }
+
+func giveSaltsEnv(c echo.Context) error {
+	string := RandStringBytesMaskImprSrc(512)
+	return c.String(http.StatusOK, string)
+}
+
+// define('AUTH_KEY',         'H!R+>kY|$Nf|Nx%ElcRs; 1?;7[JH63-`F!)jVJ<,&jLY,{f+spcv+r+hRR6tVrA');
+// define('SECURE_AUTH_KEY',  'qWtn8!1pN.20WMoh_U-yCPu>.fi@PfIMSq2`mR!#H[32m8QT-q|R<O%,i+e~T+yr');
+// define('LOGGED_IN_KEY',    'M6~Cg)qsd}ke(nlb= ;0Qu:+b:+C6n&30ngvGq-k!yj^Xs>{XBwpj-x!brRmR??F');
+// define('NONCE_KEY',        'Jx]|.<)WzY4grFWnlmGdI,`(v#cxTvoOtbrlV-$5]r:z|J)9Ouc,Go .YBW{v^nk');
+// define('AUTH_SALT',        'L^D-sxa}@iu{*r3i+|qm;,-l/7Po+S?P<=iCMqh;,EJ/7D8`[1yj]: vkLF-^:f1');
+// define('SECURE_AUTH_SALT', '`l_vCu1htqxQ+i8+15$XfFuBzj65l!pAT=x^|PL8,Le%Kq`[wY)km e-p|4r~rws');
+// define('LOGGED_IN_SALT',   '5&nNK-aXkIhFD01b&EJ#L>JeW3]%{((vBtnst.`X_~<w&lO+bpQtvW@A7GSu(dA,');
+// define('NONCE_SALT',       'wwsQ#<zh3+y> 1o`VH,db>%MD7|qG-:c_f!#.OuBp|)<%rRz.jscc[}=q>T5-TpZ');
 
 // RandStringRunes generates random string runes
 func RandStringRunes(n int) string {
