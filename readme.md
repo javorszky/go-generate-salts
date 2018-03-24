@@ -23,12 +23,12 @@ $ go test -benchmem -bench=.
 goos: darwin
 goarch: amd64
 pkg: heroku-dotenv
-BenchmarkRandStringRunes-4              	  500000	      2857 ns/op	     336 B/op	       2 allocs/op
-BenchmarkRandStringBytes-4              	 1000000	      2315 ns/op	     128 B/op	       2 allocs/op
-BenchmarkRandStringBytesRmndr-4         	 1000000	      1817 ns/op	     128 B/op	       2 allocs/op
-BenchmarkRandStringBytesMask-4          	  500000	      2855 ns/op	     128 B/op	       2 allocs/op
-BenchmarkRandStringBytesMaskImpr-4      	 2000000	       715 ns/op	     128 B/op	       2 allocs/op
-BenchmarkRandStringBytesMaskImprSrc-4   	 3000000	       498 ns/op	     128 B/op	       2 allocs/op
+BenchmarkRandStringRunes-4               500000     2857 ns/op    336 B/op      2 allocs/op
+BenchmarkRandStringBytes-4              1000000     2315 ns/op    128 B/op      2 allocs/op
+BenchmarkRandStringBytesRmndr-4         1000000     1817 ns/op    128 B/op      2 allocs/op
+BenchmarkRandStringBytesMask-4           500000     2855 ns/op    128 B/op      2 allocs/op
+BenchmarkRandStringBytesMaskImpr-4      2000000      715 ns/op    128 B/op      2 allocs/op
+BenchmarkRandStringBytesMaskImprSrc-4   3000000      498 ns/op    128 B/op      2 allocs/op
 PASS
 ok  	heroku-dotenv	11.223s
 ```
