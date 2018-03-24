@@ -54,3 +54,12 @@ func RandStringBytes(n int) string {
 	}
 	return string(b)
 }
+
+// RandStringBytesRmndr generates random string from the remainder from dividing 2 63 byte numbers with length of letterbytes
+func RandStringBytesRmndr(n int) string {
+	b := make([]byte, n)
+	for i := range b {
+		b[i] = letterBytes[rand.Int63()%int64(len(letterBytes))]
+	}
+	return string(b)
+}

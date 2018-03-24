@@ -16,3 +16,10 @@ func BenchmarkRandStringBytes(b *testing.B) {
 		RandStringBytes(64)
 	}
 }
+
+func BenchmarkRandStringBytesRmndr(b *testing.B) {
+	// run the RandStringBytesRmndr function b.N times
+	for n := 0; n < b.N; n++ {
+		RandStringBytesRmndr(64)
+	}
+}
