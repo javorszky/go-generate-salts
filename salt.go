@@ -5,7 +5,6 @@ import (
 	"math/rand"
 	"net/http"
 	"os"
-	s "strings"
 	"time"
 
 	"github.com/labstack/echo"
@@ -41,7 +40,9 @@ func init() {
 }
 
 func giveSalts(c echo.Context) error {
-	return c.String(http.StatusOK, "Hellow, World"+s.Repeat("test", 5))
+	string := RandStringBytesMaskImprSrc(64)
+
+	return c.String(http.StatusOK, fmt.Sprintf("define( 'AUTH_KEY', '%s' );", string))
 }
 
 func giveSaltsEnv(c echo.Context) error {
