@@ -5,6 +5,7 @@ import (
 	"math/rand"
 	"net/http"
 	"os"
+	"strings"
 	"time"
 
 	"github.com/labstack/echo"
@@ -26,8 +27,8 @@ var (
 func main() {
 	e := echo.New()
 
-	e.GET("/", giveSalts)
-	e.GET("/env", giveSaltsEnv)
+	e.GET("/", GiveSalts)
+	e.GET("/env", GiveSaltsEnv)
 
 	port := os.Getenv("PORT")
 
@@ -42,16 +43,68 @@ func init() {
 	rand.Seed(time.Now().UnixNano())
 }
 
-func giveSalts(c echo.Context) error {
-	string := RandStringBytesMaskImprSrc(64)
-
-	return c.String(http.StatusOK, fmt.Sprintf("define( 'AUTH_KEY', '%s' );", string))
+// GiveSalts responds to the GET / request
+func GiveSalts(c echo.Context) error {
+	// return c.String(http.StatusOK, GenerateSaltsWP8x64())
+	return c.String(http.StatusOK, GenerateSaltsWP512())
 }
 
-func giveSaltsEnv(c echo.Context) error {
-	string := RandStringBytesMaskImprSrc(512)
-	return c.String(http.StatusOK, string)
+// GiveSaltsEnv responds to the GET /env request
+func GiveSaltsEnv(c echo.Context) error {
+	// return c.String(http.StatusOK, GenerateSaltsEnv8x64())
+	return c.String(http.StatusOK, GenerateSaltsEnv512())
 }
+
+// GenerateSaltsWP8x64 generates the content for GiveSalts by calling the method 8x
+func GenerateSaltsWP8x64() string {
+	formattedStrings := make([]string, 8)
+
+	for i, arg := range saltTypes {
+		formattedStrings[i] = fmt.Sprintf("define( '%s',%s'%s' );", arg, strings.Repeat(" ", 17-len(arg)), RandStringBytesMaskImprSrc(64))
+	}
+	return strings.Join(formattedStrings, "\n")
+}
+
+// GenerateSaltsWP512 generates the content for GiveSalts by calling the method once and slicing
+func GenerateSaltsWP512() string {
+	formattedStrings := make([]string, 8)
+	longstring := RandStringBytesMaskImprSrc(512)
+
+	for i, arg := range saltTypes {
+		formattedStrings[i] = fmt.Sprintf("define( '%s',%s'%s' );", arg, strings.Repeat(" ", 17-len(arg)), longstring[i*64:(i+1)*64])
+	}
+	return strings.Join(formattedStrings, "\n")
+}
+
+// GenerateSaltsWP8x64 generates the content for GiveSaltsEnv by calling the method 8x
+func GenerateSaltsEnv8x64() string {
+	formattedStrings := make([]string, 8)
+
+	for i, arg := range saltTypes {
+		formattedStrings[i] = fmt.Sprintf("%s=\"%s\"", arg, RandStringBytesMaskImprSrc(64))
+	}
+	return strings.Join(formattedStrings, "\n")
+}
+
+// GenerateSaltsEnv512 generates the content for GiveSaltsEnv by calling the method once and slicing
+func GenerateSaltsEnv512() string {
+	formattedStrings := make([]string, 8)
+	longstring := RandStringBytesMaskImprSrc(512)
+
+	for i, arg := range saltTypes {
+		formattedStrings[i] = fmt.Sprintf("%s=\"%s\"", arg, longstring[i*64:(i+1)*64])
+	}
+	return strings.Join(formattedStrings, "\n")
+}
+
+// AUTH_KEY="put secure salts here"
+// SECURE_AUTH_KEY="put secure salts here"
+// LOGGED_IN_KEY="put secure salts here"
+// NONCE_KEY="put secure salts here"
+// AUTH_SALT="put secure salts here"
+// SECURE_AUTH_SALT="put secure salts here"
+// LOGGED_IN_SALT="put secure salts here"
+// NONCE_SALT="put secure salts here"
 
 // define('AUTH_KEY',         'H!R+>kY|$Nf|Nx%ElcRs; 1?;7[JH63-`F!)jVJ<,&jLY,{f+spcv+r+hRR6tVrA');
 // define('SECURE_AUTH_KEY',  'qWtn8!1pN.20WMoh_U-yCPu>.fi@PfIMSq2`mR!#H[32m8QT-q|R<O%,i+e~T+yr');

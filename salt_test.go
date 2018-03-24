@@ -128,3 +128,27 @@ func BenchmarkRandStringBytesMaskImprSrc512(b *testing.B) {
 		RandStringBytesMaskImprSrc(512)
 	}
 }
+
+func BenchmarkGenerateSaltsWP8x64(b *testing.B) {
+	for n := 0; n < b.N; n++ {
+		GenerateSaltsWP8x64()
+	}
+}
+
+func BenchmarkGenerateSaltsWP512(b *testing.B) {
+	for n := 0; n < b.N; n++ {
+		GenerateSaltsWP512()
+	}
+}
+
+func BenchmarkGenerateSaltsEnv8x64(b *testing.B) {
+	for n := 0; n < b.N; n++ {
+		GenerateSaltsEnv8x64()
+	}
+}
+
+func BenchmarkGenerateSaltsEnv512(b *testing.B) {
+	for n := 0; n < b.N; n++ {
+		GenerateSaltsEnv512()
+	}
+}
