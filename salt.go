@@ -74,7 +74,7 @@ func GenerateSaltsWP8x64() string {
 // GenerateSaltsWP512 generates the content for GiveSalts by calling the method once and slicing
 func GenerateSaltsWP512() string {
 	formattedStrings := make([]string, 8)
-	longstring := RandStringBytesMaskImprSrc(512)
+	longstring := RandStringBytesMaskImpr(512)
 
 	for i, arg := range saltTypes {
 		formattedStrings[i] = fmt.Sprintf("define( '%s',%s'%s' );", arg, strings.Repeat(" ", 17-len(arg)), longstring[i*64:(i+1)*64])
@@ -95,7 +95,7 @@ func GenerateSaltsEnv8x64() string {
 // GenerateSaltsEnv512 generates the content for GiveSaltsEnv by calling the method once and slicing
 func GenerateSaltsEnv512() string {
 	formattedStrings := make([]string, 8)
-	longstring := RandStringBytesMaskImprSrc(512)
+	longstring := RandStringBytesMaskImpr(512)
 
 	for i, arg := range saltTypes {
 		formattedStrings[i] = fmt.Sprintf("%s=\"%s\"", arg, longstring[i*64:(i+1)*64])
@@ -106,7 +106,7 @@ func GenerateSaltsEnv512() string {
 // GenerateSaltsJSON512 generates the content for GiveSaltsJSON by calling the method once and slicing
 func GenerateSaltsJSON512() map[string]string {
 	formattedStrings := make(map[string]string)
-	longstring := RandStringBytesMaskImprSrc(512)
+	longstring := RandStringBytesMaskImpr(512)
 
 	for i, arg := range saltTypes {
 		formattedStrings[arg] = longstring[i*64 : (i+1)*64]

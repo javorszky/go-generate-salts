@@ -152,3 +152,11 @@ func BenchmarkGenerateSaltsEnv512(b *testing.B) {
 		GenerateSaltsEnv512()
 	}
 }
+
+func BenchmarkSrcInt63Parallel(b *testing.B) {
+	b.RunParallel(func(pb *testing.PB) {
+		for pb.Next() {
+			RandStringBytesMaskImpr(512)
+		}
+	})
+}
