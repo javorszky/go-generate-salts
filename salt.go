@@ -26,6 +26,5 @@ func main() {
 }
 
 func giveSalts(c echo.Context) error {
-
 	return c.String(http.StatusOK, "Hellow, World"+s.Repeat("test", 5))
 }
