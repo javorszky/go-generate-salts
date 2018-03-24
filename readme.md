@@ -23,14 +23,20 @@ $ go test -benchmem -bench=.
 goos: darwin
 goarch: amd64
 pkg: heroku-dotenv
-BenchmarkRandStringRunes-4               500000     2857 ns/op    336 B/op      2 allocs/op
-BenchmarkRandStringBytes-4              1000000     2315 ns/op    128 B/op      2 allocs/op
-BenchmarkRandStringBytesRmndr-4         1000000     1817 ns/op    128 B/op      2 allocs/op
-BenchmarkRandStringBytesMask-4           500000     2855 ns/op    128 B/op      2 allocs/op
-BenchmarkRandStringBytesMaskImpr-4      2000000      715 ns/op    128 B/op      2 allocs/op
-BenchmarkRandStringBytesMaskImprSrc-4   3000000      498 ns/op    128 B/op      2 allocs/op
+BenchmarkRandStringRunes8x64-4               100000    22526 ns/op   2688 B/op     16 allocs/op
+BenchmarkRandStringRunes512-4                100000    22128 ns/op   2624 B/op      2 allocs/op
+BenchmarkRandStringBytes8x64-4               100000    18103 ns/op   1024 B/op     16 allocs/op
+BenchmarkRandStringBytes512-4                100000    17739 ns/op   1024 B/op      2 allocs/op
+BenchmarkRandStringBytesRmndr8x64-4          100000    14510 ns/op   1024 B/op     16 allocs/op
+BenchmarkRandStringBytesRmndr512-4           100000    14293 ns/op   1024 B/op      2 allocs/op
+BenchmarkRandStringBytesMask8x64-4           100000    20262 ns/op   1024 B/op     16 allocs/op
+BenchmarkRandStringBytesMask512-4            100000    19774 ns/op   1024 B/op      2 allocs/op
+BenchmarkRandStringBytesMaskImpr8x64-4       300000     5157 ns/op   1024 B/op     16 allocs/op
+BenchmarkRandStringBytesMaskImpr512-4        300000     4651 ns/op   1024 B/op      2 allocs/op
+BenchmarkRandStringBytesMaskImprSrc8x64-4    300000     3952 ns/op   1024 B/op     16 allocs/op
+BenchmarkRandStringBytesMaskImprSrc512-4     300000     3886 ns/op   1024 B/op      2 allocs/op
 PASS
-ok  	heroku-dotenv	11.223s
+ok  	heroku-dotenv	22.007s
 ```
 
 ## Thank you!
