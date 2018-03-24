@@ -16,6 +16,8 @@
 
 ## Benchmark
 
+We're only using the optimised fastest / safest versions of the function calls.
+
 `go test -benchmem -bench=.`
 
 As of 24th March 2018
@@ -34,6 +36,14 @@ BenchmarkSrcInt63Parallel-4               200000    11216 ns/op   1024 B/op     
 PASS
 ok      heroku-dotenv    9.803s
 ```
+
+## Profiling
+
+1. run app
+2. siege one of the endpoints continuously (`siege -c 250 -t2m -v http://localhost:8090` works nicely)
+3. _while_ siege is running, in another terminal, start the profile: `go tool pprof http://localhost:8090`
+4. enjoy your data! See [https://blog.golang.org/profiling-go-programs](https://blog.golang.org/profiling-go-programs) for more info on profiling
+5. 48.9% syscall ;)
 
 ## Thank you!
 
