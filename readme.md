@@ -32,3 +32,8 @@ BenchmarkRandStringBytesMaskImprSrc-4   3000000      498 ns/op    128 B/op      
 PASS
 ok  	heroku-dotenv	11.223s
 ```
+
+## Thank you!
+
+* https://stackoverflow.com/a/31832326/2862802 for the fantastic thread / explanations
+* @djavorszky for rubber ducking and pushing me to do the benchmarks
