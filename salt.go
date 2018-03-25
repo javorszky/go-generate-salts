@@ -1,15 +1,14 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
+	"log"
 	"math/rand"
 	"net/http"
 	"os"
 	"strings"
 	"time"
-
-	"github.com/labstack/echo"
-	echopprof "github.com/sevenNt/echo-pprof"
 )
 
 const (
@@ -26,22 +25,29 @@ var (
 )
 
 func main() {
-	e := echo.New()
-
-	e.GET("/", GiveSalts)
-	e.GET("/env", GiveSaltsEnv)
-	e.GET("/json", GiveSaltsJSON)
+	http.Handle("/", get(GiveSalts))
+	http.Handle("/env", get(GiveSaltsEnv))
+	http.Handle("/json", get(GiveSaltsJSON))
 
 	port := os.Getenv("PORT")
 
 	if port == "" {
-		fmt.Print("Port not in env, setting it to 8090")
 		port = "8090"
 	}
 
-	echopprof.Wrap(e)
+	log.Printf("Starting to listen on port %s", port)
 
-	e.Logger.Fatal(e.Start(":" + port))
+	log.Fatal(http.ListenAndServe(":"+port, nil))
+}
+
+func get(f func(http.ResponseWriter, *http.Request)) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if r.Method != http.MethodGet {
+			w.WriteHeader(http.StatusMethodNotAllowed)
+		}
+
+		f(w, r)
+	})
 }
 
 func init() {
@@ -49,18 +55,25 @@ func init() {
 }
 
 // GiveSalts responds to the GET / request
-func GiveSalts(c echo.Context) error {
-	return c.String(http.StatusOK, GenerateSaltsWP512())
+func GiveSalts(w http.ResponseWriter, r *http.Request) {
+	w.Write([]byte(GenerateSaltsWP512()))
 }
 
 // GiveSaltsEnv responds to the GET /env request
-func GiveSaltsEnv(c echo.Context) error {
-	return c.String(http.StatusOK, GenerateSaltsEnv512())
+func GiveSaltsEnv(w http.ResponseWriter, r *http.Request) {
+	w.Write([]byte(GenerateSaltsEnv512()))
 }
 
 // GiveSaltsJSON responds to the GET /json request
-func GiveSaltsJSON(c echo.Context) error {
-	return c.JSON(http.StatusOK, GenerateSaltsJSON512())
+func GiveSaltsJSON(w http.ResponseWriter, r *http.Request) {
+	resp, err := json.Marshal(GenerateSaltsJSON512())
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte("Failed to marshal JSON"))
+		log.Printf("failed to marshal json: %v", err)
+	}
+
+	w.Write(resp)
 }
 
 // GenerateSaltsWP512 generates the content for GiveSalts by calling the method once and slicing
