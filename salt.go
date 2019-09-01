@@ -25,8 +25,6 @@ var (
 	saltBytes   = saltTypeLen * 64
 )
 
-
-
 func main() {
 	e := echo.New()
 
