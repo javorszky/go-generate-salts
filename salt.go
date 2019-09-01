@@ -19,7 +19,12 @@ const (
 	letterIdxMax  = 63 / letterIdxBits   // # of letter indices fitting in 63 bits
 )
 
-var saltTypes   = [9]string{"AUTH_KEY", "SECURE_AUTH_KEY", "LOGGED_IN_KEY", "NONCE_KEY", "AUTH_SALT", "SECURE_AUTH_SALT", "LOGGED_IN_SALT", "NONCE_SALT", "WP_CACHE_KEY_SALT"}
+var (
+	saltTypes   = [9]string{"AUTH_KEY", "SECURE_AUTH_KEY", "LOGGED_IN_KEY", "NONCE_KEY", "AUTH_SALT", "SECURE_AUTH_SALT", "LOGGED_IN_SALT", "NONCE_SALT", "WP_CACHE_KEY_SALT"}
+	saltTypeLen = len(saltTypes)
+	saltBytes   = saltTypeLen * 64
+)
+
 
 
 func main() {
@@ -62,8 +67,8 @@ func GiveSaltsJSON(c echo.Context) error {
 
 // GenerateSaltsWPEfficient generates the content for GiveSalts by calling the method once and slicing
 func GenerateSaltsWPEfficient() string {
-	formattedStrings := make([]string, len(saltTypes))
-	longString := RandStringBytesMaskImpr(len(saltTypes) * 64)
+	formattedStrings := make([]string, saltTypeLen)
+	longString := RandStringBytesMaskImpr(saltBytes)
 
 	for i, arg := range saltTypes {
 		formattedStrings[i] = fmt.Sprintf("define( '%s',%s'%s' );", arg, strings.Repeat(" ", 18-len(arg)), longString[i*64:(i+1)*64])
@@ -73,8 +78,8 @@ func GenerateSaltsWPEfficient() string {
 
 // GenerateSaltsEnvEfficient generates the content for GiveSaltsEnv by calling the method once and slicing
 func GenerateSaltsEnvEfficient() string {
-	formattedStrings := make([]string, len(saltTypes))
-	longString := RandStringBytesMaskImpr(len(saltTypes) * 64)
+	formattedStrings := make([]string, saltTypeLen)
+	longString := RandStringBytesMaskImpr(saltBytes)
 
 	for i, arg := range saltTypes {
 		formattedStrings[i] = fmt.Sprintf("%s=\"%s\"", arg, longString[i*64:(i+1)*64])
@@ -85,7 +90,7 @@ func GenerateSaltsEnvEfficient() string {
 // GenerateSaltsJSONEfficient generates the content for GiveSaltsJSON by calling the method once and slicing
 func GenerateSaltsJSONEfficient() map[string]string {
 	formattedStrings := make(map[string]string)
-	longString := RandStringBytesMaskImpr(len(saltTypes) * 64)
+	longString := RandStringBytesMaskImpr(saltBytes)
 
 	for i, arg := range saltTypes {
 		formattedStrings[arg] = longString[i*64 : (i+1)*64]
