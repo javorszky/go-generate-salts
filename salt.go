@@ -20,7 +20,7 @@ const (
 )
 
 var (
-	saltTypes   = [8]string{"AUTH_KEY", "SECURE_AUTH_KEY", "LOGGED_IN_KEY", "NONCE_KEY", "AUTH_SALT", "SECURE_AUTH_SALT", "LOGGED_IN_SALT", "NONCE_SALT"}
+	saltTypes   = [9]string{"AUTH_KEY", "SECURE_AUTH_KEY", "LOGGED_IN_KEY", "NONCE_KEY", "AUTH_SALT", "SECURE_AUTH_SALT", "LOGGED_IN_SALT", "NONCE_SALT", "WP_CACHE_KEY_SALT"}
 	letterRunes = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#%^&*()-_ []{}<>~`+=,.;:/?|")
 	src         = rand.NewSource(time.Now().UnixNano())
 )
@@ -50,48 +50,48 @@ func init() {
 
 // GiveSalts responds to the GET / request
 func GiveSalts(c echo.Context) error {
-	return c.String(http.StatusOK, GenerateSaltsWP512())
+	return c.String(http.StatusOK, GenerateSaltsWPEfficient())
 }
 
 // GiveSaltsEnv responds to the GET /env request
 func GiveSaltsEnv(c echo.Context) error {
-	return c.String(http.StatusOK, GenerateSaltsEnv512())
+	return c.String(http.StatusOK, GenerateSaltsEnvEfficient())
 }
 
 // GiveSaltsJSON responds to the GET /json request
 func GiveSaltsJSON(c echo.Context) error {
-	return c.JSON(http.StatusOK, GenerateSaltsJSON512())
+	return c.JSON(http.StatusOK, GenerateSaltsJSONEfficient())
 }
 
-// GenerateSaltsWP512 generates the content for GiveSalts by calling the method once and slicing
-func GenerateSaltsWP512() string {
-	formattedStrings := make([]string, 8)
-	longstring := RandStringBytesMaskImpr(512)
+// GenerateSaltsWPEfficient generates the content for GiveSalts by calling the method once and slicing
+func GenerateSaltsWPEfficient() string {
+	formattedStrings := make([]string, len(saltTypes))
+	longString := RandStringBytesMaskImpr(len(saltTypes) * 64)
 
 	for i, arg := range saltTypes {
-		formattedStrings[i] = fmt.Sprintf("define( '%s',%s'%s' );", arg, strings.Repeat(" ", 17-len(arg)), longstring[i*64:(i+1)*64])
+		formattedStrings[i] = fmt.Sprintf("define( '%s',%s'%s' );", arg, strings.Repeat(" ", 18-len(arg)), longString[i*64:(i+1)*64])
 	}
 	return strings.Join(formattedStrings, "\n")
 }
 
-// GenerateSaltsEnv512 generates the content for GiveSaltsEnv by calling the method once and slicing
-func GenerateSaltsEnv512() string {
-	formattedStrings := make([]string, 8)
-	longstring := RandStringBytesMaskImpr(512)
+// GenerateSaltsEnvEfficient generates the content for GiveSaltsEnv by calling the method once and slicing
+func GenerateSaltsEnvEfficient() string {
+	formattedStrings := make([]string, len(saltTypes))
+	longString := RandStringBytesMaskImpr(len(saltTypes) * 64)
 
 	for i, arg := range saltTypes {
-		formattedStrings[i] = fmt.Sprintf("%s=\"%s\"", arg, longstring[i*64:(i+1)*64])
+		formattedStrings[i] = fmt.Sprintf("%s=\"%s\"", arg, longString[i*64:(i+1)*64])
 	}
 	return strings.Join(formattedStrings, "\n")
 }
 
-// GenerateSaltsJSON512 generates the content for GiveSaltsJSON by calling the method once and slicing
-func GenerateSaltsJSON512() map[string]string {
+// GenerateSaltsJSONEfficient generates the content for GiveSaltsJSON by calling the method once and slicing
+func GenerateSaltsJSONEfficient() map[string]string {
 	formattedStrings := make(map[string]string)
-	longstring := RandStringBytesMaskImpr(512)
+	longString := RandStringBytesMaskImpr(len(saltTypes) * 64)
 
 	for i, arg := range saltTypes {
-		formattedStrings[arg] = longstring[i*64 : (i+1)*64]
+		formattedStrings[arg] = longString[i*64 : (i+1)*64]
 	}
 	return formattedStrings
 }

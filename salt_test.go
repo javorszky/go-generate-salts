@@ -25,19 +25,19 @@ func BenchmarkRandStringBytesMaskImpr512(b *testing.B) {
 
 func BenchmarkGenerateSaltsWP512(b *testing.B) {
 	for n := 0; n < b.N; n++ {
-		GenerateSaltsWP512()
+		GenerateSaltsWPEfficient()
 	}
 }
 
 func BenchmarkGenerateSaltsEnv512(b *testing.B) {
 	for n := 0; n < b.N; n++ {
-		GenerateSaltsEnv512()
+		GenerateSaltsEnvEfficient()
 	}
 }
 
 func BenchmarkGenerateSaltsJSON512(b *testing.B) {
 	for n := 0; n < b.N; n++ {
-		GenerateSaltsJSON512()
+		GenerateSaltsJSONEfficient()
 	}
 }
 
