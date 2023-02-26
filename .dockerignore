@@ -1,0 +1,13 @@
+# flyctl launch added from vendor/github.com/labstack/echo/.gitignore
+vendor/github.com/labstack/echo/**/.DS_Store
+vendor/github.com/labstack/echo/**/coverage.txt
+vendor/github.com/labstack/echo/**/_test
+vendor/github.com/labstack/echo/**/vendor
+vendor/github.com/labstack/echo/**/.idea
+vendor/github.com/labstack/echo/**/*.iml
+vendor/github.com/labstack/echo/**/*.out
+
+# flyctl launch added from vendor/golang.org/x/sys/unix/.gitignore
+vendor/golang.org/x/sys/unix/**/_obj
+vendor/golang.org/x/sys/unix/**/unix.test
+fly.toml
