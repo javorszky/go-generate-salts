@@ -3,48 +3,48 @@ package main
 import "testing"
 
 func BenchmarkRandStringBytesMaskImpr8x64(b *testing.B) {
-	// run the RandStringBytesMaskImpr function b.N times
+	// run the randStringBytesMaskImpr function b.N times
 	for n := 0; n < b.N; n++ {
-		RandStringBytesMaskImpr(64)
-		RandStringBytesMaskImpr(64)
-		RandStringBytesMaskImpr(64)
-		RandStringBytesMaskImpr(64)
-		RandStringBytesMaskImpr(64)
-		RandStringBytesMaskImpr(64)
-		RandStringBytesMaskImpr(64)
-		RandStringBytesMaskImpr(64)
+		randStringBytesMaskImpr(64)
+		randStringBytesMaskImpr(64)
+		randStringBytesMaskImpr(64)
+		randStringBytesMaskImpr(64)
+		randStringBytesMaskImpr(64)
+		randStringBytesMaskImpr(64)
+		randStringBytesMaskImpr(64)
+		randStringBytesMaskImpr(64)
 	}
 }
 
 func BenchmarkRandStringBytesMaskImpr512(b *testing.B) {
-	// run the RandStringBytesMaskImpr function b.N times
+	// run the randStringBytesMaskImpr function b.N times
 	for n := 0; n < b.N; n++ {
-		RandStringBytesMaskImpr(512)
+		randStringBytesMaskImpr(512)
 	}
 }
 
 func BenchmarkGenerateSaltsWP512(b *testing.B) {
 	for n := 0; n < b.N; n++ {
-		GenerateSaltsWPEfficient()
+		generateSaltsWPEfficient()
 	}
 }
 
 func BenchmarkGenerateSaltsEnv512(b *testing.B) {
 	for n := 0; n < b.N; n++ {
-		GenerateSaltsEnvEfficient()
+		generateSaltsEnvEfficient()
 	}
 }
 
 func BenchmarkGenerateSaltsJSON512(b *testing.B) {
 	for n := 0; n < b.N; n++ {
-		GenerateSaltsJSONEfficient()
+		generateSaltsJSONEfficient()
 	}
 }
 
 func BenchmarkSrcInt63Parallel(b *testing.B) {
 	b.RunParallel(func(pb *testing.PB) {
 		for pb.Next() {
-			RandStringBytesMaskImpr(512)
+			randStringBytesMaskImpr(512)
 		}
 	})
 }
