@@ -1,3 +1,5 @@
+salt
+
 # flyctl launch added from vendor/github.com/labstack/echo/.gitignore
 vendor/github.com/labstack/echo/**/.DS_Store
 vendor/github.com/labstack/echo/**/coverage.txt
