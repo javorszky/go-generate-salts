@@ -1,23 +1,18 @@
-# fly.toml file generated for go-generate-salts on 2023-02-26T23:36:49Z
+# fly.toml file generated for go-generate-salts on 2023-02-27T00:47:08Z
 
 app = "go-generate-salts"
 kill_signal = "SIGINT"
 kill_timeout = 5
 processes = []
 
-[build]
-  builder = "paketobuildpacks/builder:base"
-  buildpacks = ["gcr.io/paketo-buildpacks/go"]
-
 [env]
-  PORT = "8080"
 
 [experimental]
   auto_rollback = true
 
 [[services]]
   http_checks = []
-  internal_port = 8080
+  internal_port = 8090
   processes = ["app"]
   protocol = "tcp"
   script_checks = []
