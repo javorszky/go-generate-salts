@@ -1,6 +1,7 @@
 package main
 
 import (
+	crand "crypto/rand"
 	"fmt"
 	"math/rand"
 	"net/http"
@@ -18,9 +19,19 @@ const (
 )
 
 var (
-	saltTypes   = [9]string{"AUTH_KEY", "SECURE_AUTH_KEY", "LOGGED_IN_KEY", "NONCE_KEY", "AUTH_SALT", "SECURE_AUTH_SALT", "LOGGED_IN_SALT", "NONCE_SALT", "WP_CACHE_KEY_SALT"}
-	saltTypeLen = len(saltTypes)
-	saltBytes   = saltTypeLen * 64
+	saltTypes = [9]string{
+		"AUTH_KEY",
+		"SECURE_AUTH_KEY",
+		"LOGGED_IN_KEY",
+		"NONCE_KEY",
+		"AUTH_SALT",
+		"SECURE_AUTH_SALT",
+		"LOGGED_IN_SALT",
+		"NONCE_SALT",
+		"WP_CACHE_KEY_SALT",
+	} // all the different salts we're going to generate
+	saltTypeLen = len(saltTypes)   // how many of them are there
+	saltBytes   = saltTypeLen * 64 // total number of bytes we need to generate a long string that we're going to cut to size.
 )
 
 func main() {
@@ -29,6 +40,7 @@ func main() {
 	e.GET("/", giveSalts)
 	e.GET("/env", giveSaltsEnv)
 	e.GET("/json", giveSaltsJSON)
+	e.GET("/docker", giveSaltsDocker)
 
 	port := os.Getenv("PORT")
 
@@ -54,6 +66,19 @@ func giveSaltsEnv(c echo.Context) error {
 // giveSaltsJSON responds to the GET /json request
 func giveSaltsJSON(c echo.Context) error {
 	return c.JSON(http.StatusOK, generateSaltsJSONEfficient())
+}
+
+func giveSaltsDocker(c echo.Context) error {
+	rnd := make([]byte, 1)
+	n, err := crand.Read(rnd)
+	if err != nil {
+		return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
+	}
+
+	return c.String(http.StatusOK, fmt.Sprintf("%d bytes, and it's\n\n"+
+		"%08b\n"+
+		"%08b\n"+
+		"%08b", n, rnd[0], letterIdxMax, rnd[0]&letterIdxMax))
 }
 
 // generateSaltsWPEfficient generates the content for giveSalts by calling the method once and slicing
@@ -95,6 +120,9 @@ func generateSaltsJSONEfficient() map[string]string {
 // randStringBytesMaskImpr slices up the bits of the random number and uses all slices
 func randStringBytesMaskImpr(n int) string {
 	b := make([]byte, n)
+
+	//rnd := make([]byte, 8)
+
 	// A rand.Int63() generates 63 random bits, enough for letterIdxMax letters!
 	for i, cache, remain := n-1, rand.Int63(), letterIdxMax; i >= 0; {
 		if remain == 0 {

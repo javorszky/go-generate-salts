@@ -11,14 +11,9 @@ COPY *.go ./
 
 RUN go build -o /salt
 
-FROM gcr.io/distroless/base-debian10
+FROM alpine
 
+COPY --from=builder /salt /
 WORKDIR /
-
-COPY --from=builder /salt /salt
-
 EXPOSE 8090
-
-USER nonroot:nonroot
-
 ENTRYPOINT ["/salt"]
