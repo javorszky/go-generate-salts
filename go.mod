@@ -11,6 +11,8 @@ require (
 	github.com/stretchr/testify v1.8.2 // indirect
 	github.com/valyala/bytebufferpool v1.0.0 // indirect
 	github.com/valyala/fasttemplate v0.0.0-20170224212429-dcecefd839c4 // indirect
-	golang.org/x/crypto v0.0.0-20180214000028-650f4a345ab4 // indirect
-	golang.org/x/sys v0.0.0-20180322165403-91ee8cde4354 // indirect
+	golang.org/x/crypto v0.31.0 // indirect
+	golang.org/x/net v0.21.0 // indirect
+	golang.org/x/sys v0.28.0 // indirect
+	golang.org/x/text v0.21.0 // indirect
 )
